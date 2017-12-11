@@ -18,13 +18,14 @@ public class conecta4{
 	  int fila;
 	  int i;
 	  int j;
-	  int contador=0;	 
-	  int comprobacion; 
+	  int contador=0;
+	  int comprobacion;
+    String os= System.getProperty("os.name");
 	  tablero = new String[MAXI][MAXJ];
 	  partida = "si";
 	  fila = 0;
 	  jugador = " ";
-	  
+
 	  //Pide el nombre de los jugadores
 	  System.out.print("Introduce el nombre del jugador1: ");
 	  nombre_jugador1 = reader.readLine();
@@ -33,9 +34,9 @@ public class conecta4{
 	  nombre_jugador2 = reader.readLine();
 	  if (nombre_jugador1.equals(nombre_jugador2)) {
 		  System.out.println("Error. Los nombres de los jugadores no pueden ser iguales");
-	  } 
+	  }
 	  } while (nombre_jugador1.equals(nombre_jugador2));
-	  
+
 	  //Inicializo el tablero a 0
 	  for (i=0;i<MAXI;i++){
 		  for (j=0;j<MAXJ;j++){
@@ -49,8 +50,12 @@ public class conecta4{
 		  }
 	  }
 	  do {
-		  new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-		  
+      if (os.contains("Windows")) {
+		      new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        } else {
+          Runtime.getRuntime().exec("clear");
+        }
+
 		  //Cambia el turno del jugador
 		  if (jugador.equals(nombre_jugador1)) {
 			  jugador = nombre_jugador2;
@@ -59,7 +64,7 @@ public class conecta4{
 			  jugador = nombre_jugador1;
 			  ficha = fichaj1;
 		  }
-		  
+
 		  //Imprimo el tablero
 		  for (i=0;i<MAXI;i++){
 			  for (j=0;j<MAXJ;j++){
@@ -67,7 +72,7 @@ public class conecta4{
 			  }
 			  System.out.println();
 		  }
-		  
+
 		  //El jugador1 selecciona una columna para meter una ficha
 		  do {
 			  System.out.print(jugador + " introduce la columna donde introducir la ficha: ");
@@ -75,9 +80,9 @@ public class conecta4{
 			  if (posicion>MAXJ-1 || posicion<1) {
 				  System.out.println("No existe la columna donde has intentado introducir la ficha.");
 				  continue;
-			  }	
-			  		  
-			  /*Comprueba si la columna esta llena y 
+			  }
+
+			  /*Comprueba si la columna esta llena y
 			   * si no lo esta introduce la ficha */
 			  for (i=MAXI-1;i>0;i--){
 					if (!tablero[1][posicion].equals(vacio)) {
@@ -91,12 +96,12 @@ public class conecta4{
 					}
 				}
 			  } while (posicion>MAXJ-1 || posicion<1);
-			  
+
 			  //Comprobacion
 			  for (comprobacion=0;comprobacion<5;comprobacion++) {
 				  contador = 0;
-				  switch (comprobacion) {						  	
-					  case 0:		  
+				  switch (comprobacion) {
+					  case 0:
 						  /* Comprueba en la columna donde se introdujo la ficha
 						   *  si hay un 4 en raya */
 						  for (i=1;i<MAXI;i++){
@@ -108,7 +113,7 @@ public class conecta4{
 								}
 						  }
 					  	  break;
-					  	  				  
+
 					  case 1:
 						  /* Comprueba en la fila donde se introdujo la ficha
 						   * si hay un 4 en raya */
@@ -121,7 +126,7 @@ public class conecta4{
 								}
 						  }
 						  break;
-						  										  
+
 					  case 2:
 						  /* Comprueba la diagonal inversa \ de la posicion donde
 						   * se introdujo la ficha si hay un 4 en raya */
@@ -141,13 +146,13 @@ public class conecta4{
 										contador++;
 									} else if (!tablero[j-(posicion-fila)][j].equals(ficha)) {
 										contador=0;
-									}				
+									}
 								}
-						  }						
+						  }
 						  break;
-							
+
 					  case 3:
-						/* Comprueba la diagonal directa / si hay un 4 en 
+						/* Comprueba la diagonal directa / si hay un 4 en
 						 * raya */
 						  if ((MAXI-fila)>=posicion) {
 							for (i=0;i<fila+posicion;i++){
@@ -165,8 +170,8 @@ public class conecta4{
 										contador++;
 									} else if (!tablero[(fila+1)-(j-(MAXI-fila))][j].equals(ficha)) {
 										contador=0;
-									}									
-							  }						
+									}
+							  }
 						  }
 						  break;
 					}
@@ -177,7 +182,7 @@ public class conecta4{
 							   System.out.print(tablero[i][j]);
 						  }
 						  System.out.println();
-					  }						
+					  }
 					  System.out.println(jugador + " ha ganado!");
 					  partida="finalizada";
 					  break;
@@ -194,11 +199,11 @@ public class conecta4{
 					  tablero[i][j]=vacio;
 					  }
 				  }
-			  }		
-			  jugador = " ";		
+			  }
+			  jugador = " ";
 			  System.out.print("Quieres volver a jugar? ");
 			  partida = reader.readLine();
-			}										  		  
+			}
 	  } while (partida.equals("si"));
  }
 }
